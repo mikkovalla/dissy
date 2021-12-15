@@ -14,6 +14,9 @@ const io = sockets(server)
 // Socket io connection
 io.on('connection', socket => {
     console.log('New connection established!')
+
+    // Emit welcome message
+    socket.emit('message', 'Welcome player # NameHere #')
 })
 // env.PORT specified here for future deployment
 const PORT = 3000 || process.env.PORT
