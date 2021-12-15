@@ -16,6 +16,7 @@ rollButton.addEventListener('submit', e => {
     socket.emit('dieValue', dieValue)
 })
 
+// function return random number between 1 - 6
 function rolledDieNumber() {
     return Math.floor(Math.random() * 6) + 1
 }

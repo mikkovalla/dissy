@@ -24,6 +24,11 @@ io.on('connection', socket => {
     socket.on('forfeit', () => {
         io.emit('message', '# NameHere # is a looser and gave up!')
     })
+
+    // Record rolled die value
+    socket.on('dieValue', dieValue => {
+        console.log(dieValue)
+    })
 })
 
 // env.PORT specified here for future deployment
