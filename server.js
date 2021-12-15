@@ -27,7 +27,9 @@ io.on('connection', socket => {
 
     // Record rolled die value
     socket.on('dieValue', dieValue => {
-        console.log(dieValue)
+        //console.log(dieValue)
+        //emit die value to all players
+        io.emit('message', dieValue)
     })
 })
 
