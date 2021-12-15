@@ -1,0 +1,21 @@
+{
+  "name": "dice-game",
+  "version": "1.0.0",
+  "description": "Distributed Systems course project 2/2021",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo no tests",
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": "https://github.com/mikkovalla/dissy.git",
+  "author": "mikko.vallaskivi@visma.com",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.0"
+  }
+}
