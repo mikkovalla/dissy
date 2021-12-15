@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://kit.fontawesome.com/9fdce900f1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Dice Game</title>
+</head>
+
+<body>
+    <div class="join-container">
+        <header class="join-header">
+            <h1><i class="fas fa-dice"></i>
+                Dice Game</h1>
+        </header>
+        <main class="join-main">
+            <form action="game.html">
+                <div class="form-control">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter username..." required />
+                </div>
+                <div class="form-control">
+                    <label for="game">Game Type</label>
+                    <select name="game" id="game">
+                        <option value="1 roll">1 roll</option>
+                        <option value="2 rolls">2 rolls</option>
+                        <option value="3 rolls">3 rolls</option>
+                        <option value="4 rolls">4 rolls</option>
+                        <option value="5 rolls">5 rolls</option>
+                        <option value="10 rolls">10 rolls</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Lets play</button>
+            </form>
+        </main>
+    </div>
+</body>
+
+</html>

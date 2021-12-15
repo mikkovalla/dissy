@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9fdce900f1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Dice Game</title>
+</head>
+
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1><i class="fas fa-dice"></i></i> Dice Game</h1>
+            <a href="index.html" class="btn">Forfeit</a>
+        </header>
+        <main class="game-main">
+            <div class="game-sidebar">
+                <h3><i class="fas fa-comments"></i> Game Type</h3>
+                <h2 id="game-name">3 rolls</h2>
+                <h3><i class="fas fa-users"></i> Players</h3>
+                <ul id="players">
+                    <li>Mixu <p id="total-score">Score: 3</p></li>
+                    <li>Jukka <p id="total-score">Score: 6</p></li>
+                    <li>Juti <p id="total-score">Score: 9</p></li>
+                    <li>Teme <p id="total-score">Score: 12</p></li>
+                    <li>Säkki <p id="total-score">Score: 11</p></li>
+                </ul>
+            </div>
+            <div class="game-rolls">
+                <div class="result">
+                    <p class="meta">Mixu <span>9:15pm</span></p>
+                    <p class="score">
+                        5
+                    </p>
+                </div>
+                <div class="result">
+                    <p class="meta">Jukka <span>9:17pm</span></p>
+                    <p class="score">
+                        4
+                    </p>
+                </div>
+            </div>
+        </main>
+        <div class="game-form-container">
+            <form id="game-form">
+                <button class="btn"><i class="fas fa-dice-five"></i> Roll</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
