@@ -15,8 +15,11 @@ const io = sockets(server)
 io.on('connection', socket => {
     console.log('New connection established!')
 
-    // Emit welcome message
+    // Emit welcome message - Emits only to the connected player
     socket.emit('message', 'Welcome player # NameHere #')
+
+    // Broadcast to other players that new player has joined
+    socket.broadcast.emit('message', 'New player has joined the game # NameHere #')
 })
 // env.PORT specified here for future deployment
 const PORT = 3000 || process.env.PORT
