@@ -3,12 +3,19 @@ const socket = io();
 
 const gameRolls = document.querySelector('.game-rolls')
 
+// Grap username and game from URL
+const { username, game } = Qs.parse(location.search, {
+    ignoreQueryPrefix: true
+})
+
 // Emit message
 socket.on('message', message => {
     //console.log(message)
     renderMessage(message)
     gameRolls.scrollTop = gameRolls.scrollHeight
 })
+
+socket.emit('joinGame', { username, game })
 
 // Access dice roll button
 const rollButton = document.getElementById('game-form')

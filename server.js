@@ -4,6 +4,10 @@ const path = require('path')
 const http = require('http')
 const sockets = require('socket.io')
 const resultFormatter = require('./results')
+const {
+    playerJoinGame,
+    getPlayer
+} = require('./players')
 
 // Server Creation
 const app = express()
@@ -18,22 +22,34 @@ const gameBot = 'Game Bot'
 // Socket io connection
 io.on('connection', socket => {
 
-    // Emit welcome message - Emits only to the connected player
-    socket.emit('message', resultFormatter(gameBot, 'Welcome to Dice Game'))
+    // Join player to a game
+    socket.on('joinGame', ({
+        username,
+        game
+    }) => {
+        //create player object and join it to a game. Using socket ID for player ID to differentiate players since no DB is used.
+        const player = playerJoinGame(socket.id, username, game)
+        socket.join(player.game)
 
-    // Broadcast to other players that new player has joined
-    socket.broadcast.emit('message', resultFormatter(gameBot, 'New player has joined the game # NameHere #'))
+        // Emit welcome message - Emits only to the connected player
+        socket.emit('message', resultFormatter(gameBot, `Welcome to Dice Game!`))
+
+        // Broadcast to other players in the specifix game that new player has joined
+        socket.broadcast.to(player.game).emit('message', resultFormatter(gameBot, `${player.username} has joined the game`))
+    })
 
     // Player leaves the game
     socket.on('forfeit', () => {
-        io.emit('message', resultFormatter(gameBot, '# NameHere # is a looser and gave up!'))
+        const player = getPlayer(socket.id)
+        io.emit('message', resultFormatter(gameBot, `${player.username} is a looser and gave up!`))
     })
 
     // Record rolled die value
     socket.on('dieValue', dieValue => {
         //console.log(dieValue)
+        const player = getPlayer(socket.id)
         //emit die value to all players
-        io.emit('message', resultFormatter('username', `rolled ${dieValue}`))
+        io.to(player.room).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
     })
 })
 
