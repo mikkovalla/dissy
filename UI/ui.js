@@ -1,10 +1,13 @@
 // Access imported socket io
 const socket = io();
 
+const gameRolls = document.querySelector('.game-rolls')
+
 // Emit message
 socket.on('message', message => {
     //console.log(message)
     renderMessage(message)
+    gameRolls.scrollTop = gameRolls.scrollHeight
 })
 
 // Access dice roll button
