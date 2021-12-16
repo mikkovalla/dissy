@@ -5,7 +5,7 @@ function resultFormatter (username, result) {
     return {
         username,
         result,
-        time: moment().utcOffset('+00:00').format('h:mm a')
+        time: moment().format('h:mm a')
     }
 }
 

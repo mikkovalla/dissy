@@ -31,9 +31,9 @@ function renderMessage(dieValue) {
     div.classList.add('result')
     // Never do this in prod, leaves a path for a XSS attack. Done here for speed and simplicity
     div.innerHTML = 
-        `<p class="meta">Mixu <span>9:15pm</span></p>
+        `<p class="meta">${dieValue.username} <span>${dieValue.time}</span></p>
             <p class="score">
-                ${dieValue}
+                ${dieValue.result}
         </p>`
     // append results to UI
     document.querySelector('.game-rolls').appendChild(div)
