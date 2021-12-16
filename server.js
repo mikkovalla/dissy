@@ -7,7 +7,9 @@ const resultFormatter = require('./results')
 const {
     playerJoinGame,
     getPlayer,
-    playerForfeit
+    playerForfeit,
+    getGamePlayers,
+    updateScore
 } = require('./players')
 
 // Server Creation
@@ -22,14 +24,14 @@ const gameBot = 'Game Bot'
 
 // Socket io connection
 io.on('connection', socket => {
-
+    let player = {}
     // Join player to a game
     socket.on('joinGame', ({
         username,
         game
     }) => {
         //create player object and join it to a game. Using socket ID for player ID to differentiate players since no DB is used.
-        const player = playerJoinGame(socket.id, username, game)
+        player = playerJoinGame(socket.id, username, game)
         console.log(player)
         socket.join(player.game)
 
@@ -38,22 +40,36 @@ io.on('connection', socket => {
 
         // Broadcast to other players in the specifix game that new player has joined
         socket.broadcast.to(player.game).emit('message', resultFormatter(gameBot, `${player.username} has joined the game`))
+
+        // Emit players and game info
+        io.to(player.game).emit('gamePlayers', {
+            game: player.game,
+            players: getGamePlayers(player.game)
+        })
     })
 
     // Player leaves the game
     socket.on('forfeit', () => {
-        const player = getPlayer(socket.id)
+        //const player = getPlayer(socket.id)
         playerForfeit(socket.id)
         io.to(player.game).emit('message', resultFormatter(gameBot, `${player.username} is a looser and gave up!`))
+         // Emit players and game info
+         io.to(player.game).emit('gamePlayers', {
+            game: player.game,
+            players: getGamePlayers(player.game)
+        })
     })
 
     // Record rolled die value
     socket.on('dieValue', dieValue => {
         console.log(dieValue)
-        const player = getPlayer(socket.id)
+        //const player = getPlayer(socket.id)
+        console.log('Die: ', player)
         //emit die value to all players
         // THIS IS BUGGY -> it requires to(player.game).emit to broadcast result only to player room.
-        io.emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
+        io.to(player.game).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
+        //save die value to player score
+        updateScore(socket.id, dieValue)
     })
 })
 

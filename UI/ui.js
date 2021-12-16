@@ -2,9 +2,14 @@
 const socket = io();
 
 const gameRolls = document.querySelector('.game-rolls')
+const gameName = document.getElementById('game-name')
+const playersList = document.getElementById('players')
 
 // Grap username and game from URL
-const { username, game } = Qs.parse(location.search, {
+const {
+    username,
+    game
+} = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 })
 
@@ -15,7 +20,19 @@ socket.on('message', message => {
     gameRolls.scrollTop = gameRolls.scrollHeight
 })
 
-socket.emit('joinGame', { username, game })
+socket.emit('joinGame', {
+    username,
+    game
+})
+
+// Get players in the game
+socket.on('gamePlayers', ({
+    game,
+    players
+}) => {
+    renderGameName(game)
+    renderPlayers(players)
+})
 
 // Access dice roll button
 const rollButton = document.getElementById('game-form')
@@ -39,11 +56,25 @@ function renderMessage(dieValue) {
     const div = document.createElement('div')
     div.classList.add('result')
     // Never do this in prod, leaves a path for a XSS attack. Done here for speed and simplicity
-    div.innerHTML = 
+    div.innerHTML =
         `<p class="meta">${dieValue.username} <span>${dieValue.time}</span></p>
             <p class="score">
                 ${dieValue.result}
         </p>`
     // append results to UI
     document.querySelector('.game-rolls').appendChild(div)
+}
+
+// Game name to UI
+function renderGameName(game) {
+    console.log('Game name: ', game)
+    gameName.innerText = game
+}
+
+// Players list to UI
+function renderPlayers(players) {
+    console.log('Players: ', players)
+    playersList.innerHTML = `
+        ${players.map(player => `<li>${player.username} ${player.score[0]}</li>`).join('')}
+    `
 }
