@@ -22,7 +22,7 @@ const rollButton = document.getElementById('game-form')
 rollButton.addEventListener('submit', e => {
     e.preventDefault()
     const dieValue = rolledDieNumber()
-    //console.log(dieValue)
+    console.log(dieValue)
     // Emit Die value to server
     socket.emit('dieValue', dieValue)
 })

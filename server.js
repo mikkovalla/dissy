@@ -6,7 +6,8 @@ const sockets = require('socket.io')
 const resultFormatter = require('./results')
 const {
     playerJoinGame,
-    getPlayer
+    getPlayer,
+    playerForfeit
 } = require('./players')
 
 // Server Creation
@@ -29,6 +30,7 @@ io.on('connection', socket => {
     }) => {
         //create player object and join it to a game. Using socket ID for player ID to differentiate players since no DB is used.
         const player = playerJoinGame(socket.id, username, game)
+        console.log(player)
         socket.join(player.game)
 
         // Emit welcome message - Emits only to the connected player
@@ -41,15 +43,17 @@ io.on('connection', socket => {
     // Player leaves the game
     socket.on('forfeit', () => {
         const player = getPlayer(socket.id)
-        io.emit('message', resultFormatter(gameBot, `${player.username} is a looser and gave up!`))
+        playerForfeit(socket.id)
+        io.to(player.game).emit('message', resultFormatter(gameBot, `${player.username} is a looser and gave up!`))
     })
 
     // Record rolled die value
     socket.on('dieValue', dieValue => {
-        //console.log(dieValue)
+        console.log(dieValue)
         const player = getPlayer(socket.id)
         //emit die value to all players
-        io.to(player.room).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
+        // THIS IS BUGGY -> it requires to(player.game).emit to broadcast result only to player room.
+        io.emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
     })
 })
 

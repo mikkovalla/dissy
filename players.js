@@ -19,7 +19,16 @@ function getPlayer(id) {
     return players.find(player => player.id === id)
 }
 
+// Remove user from array when they leave a game
+function playerForfeit(id) {
+    const player = players.find(player => player.id === id)
+    console.log(player)
+    players.filter(player => player.id !== id)
+    return player
+}
+
 module.exports = {
     playerJoinGame,
-    getPlayer
+    getPlayer,
+    playerForfeit
 }
