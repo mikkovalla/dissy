@@ -26,6 +26,8 @@ function rolledDieNumber() {
 }
 
 // Function to render messages from server to UI. includes rolled die scores
+// this is a very generic and broad function that renders all outputs
+// prod way would of been differentiating Game bot and player outputs
 function renderMessage(dieValue) {
     const div = document.createElement('div')
     div.classList.add('result')
