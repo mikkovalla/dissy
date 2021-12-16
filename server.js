@@ -12,25 +12,28 @@ const server = http.createServer(app)
 // Create socket io server
 const io = sockets(server)
 
+// Generic variable for game bot
+const gameBot = 'Game Bot'
+
 // Socket io connection
 io.on('connection', socket => {
 
     // Emit welcome message - Emits only to the connected player
-    socket.emit('message', 'Welcome player # NameHere #')
+    socket.emit('message', resultFormatter(gameBot, 'Welcome to Dice Game'))
 
     // Broadcast to other players that new player has joined
-    socket.broadcast.emit('message', 'New player has joined the game # NameHere #')
+    socket.broadcast.emit('message', resultFormatter(gameBot, 'New player has joined the game # NameHere #'))
 
     // Player leaves the game
     socket.on('forfeit', () => {
-        io.emit('message', '# NameHere # is a looser and gave up!')
+        io.emit('message', resultFormatter(gameBot, '# NameHere # is a looser and gave up!'))
     })
 
     // Record rolled die value
     socket.on('dieValue', dieValue => {
         //console.log(dieValue)
         //emit die value to all players
-        io.emit('message', dieValue)
+        io.emit('message', resultFormatter('username', `rolled ${dieValue}`))
     })
 })
 
