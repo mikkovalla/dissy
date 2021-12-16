@@ -3,6 +3,7 @@ const express = require('express')
 const path = require('path')
 const http = require('http')
 const sockets = require('socket.io')
+const resultFormatter = require('./results')
 
 // Server Creation
 const app = express()
