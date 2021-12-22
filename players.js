@@ -7,6 +7,7 @@ function playerJoinGame(id, username, game) {
         id,
         username,
         game,
+        rolls: 0,
         score: 0,
         wins: 0
     }
@@ -23,13 +24,22 @@ function getPlayer(id) {
 // Remove user from array when they leave a game
 function playerForfeit(id) {
     const player = players.find(player => player.id === id)
-    players.filter(player => player.id !== id)
-    return player
+    if (index !== -1) {
+        return users.splice(index, 1)[0];
+    }
 }
 
 // Get game players
 function getGamePlayers(game) {
     return players.filter(player => player.game === game)
+}
+
+// Get game player scores after n rolls
+function getGamePlayerScoresAfterNRolls(game) {
+    let gamePlayers = players.filter(player => player.game === game)
+    console.log('Gameplayers: ', gamePlayers)
+
+    return gamePlayers
 }
 
 // push to player score
@@ -50,6 +60,18 @@ function updateWins(id, win) {
     player.win += 1
 }
 
+// update player rolls
+function updateRolls(id) {
+    const player = players.find(player => player.id === id)
+    player.rolls += 1
+}
+
+// get player rolls
+function getPlayerRolls(id) {
+    const player = players.find(player => player.id === id)
+    return player.rolls
+}
+
 module.exports = {
     playerJoinGame,
     getPlayer,
@@ -57,5 +79,8 @@ module.exports = {
     getGamePlayers,
     updateScore,
     getPlayerScore,
-    updateWins
+    updateWins,
+    updateRolls,
+    getPlayerRolls,
+    getGamePlayerScoresAfterNRolls
 }

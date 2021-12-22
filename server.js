@@ -11,7 +11,9 @@ const {
     getGamePlayers,
     updateScore,
     getPlayerScore,
-    updateWins
+    updateWins,
+    updateRolls,
+    getPlayerRolls
 } = require('./players')
 
 // Server Creation
@@ -24,6 +26,9 @@ const io = sockets(server)
 // Generic variable for game bot
 const gameBot = 'Game Bot'
 
+// Global number of rolls in the game
+let numberOfRolls = 0
+
 // Socket io connection
 io.on('connection', socket => {
     let player = {}
@@ -35,6 +40,7 @@ io.on('connection', socket => {
         //create player object and join it to a game. Using socket ID for player ID to differentiate players since no DB is used.
         player = playerJoinGame(socket.id, username, game)
         console.log('Player joins', player)
+        numberOfRolls = parseInt(player.game.substring(0, 1))
         socket.join(player.game)
 
         // Emit welcome message - Emits only to the connected player
@@ -55,8 +61,8 @@ io.on('connection', socket => {
         //const player = getPlayer(socket.id)
         playerForfeit(socket.id)
         io.to(player.game).emit('message', resultFormatter(gameBot, `${player.username} is a looser and gave up!`))
-         // Emit players and game info
-         io.to(player.game).emit('gamePlayers', {
+        // Emit players and game info
+        io.to(player.game).emit('gamePlayers', {
             game: player.game,
             players: getGamePlayers(player.game)
         })
@@ -65,14 +71,27 @@ io.on('connection', socket => {
     // Record rolled die value
     socket.on('dieValue', dieValue => {
         //const player = getPlayer(socket.id)
-        //emit die value to all players
-        io.to(player.game).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
-        //save die value to player score
-        updateScore(socket.id, dieValue)
+
+        if (player.rolls === numberOfRolls - 1) {
+            //emit die value to all players
+            io.to(player.game).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
+            //save die value to player score
+            updateScore(socket.id, dieValue)
+            updateRolls(socket.id)
+            io.to(player.game).emit('message', resultFormatter(player.username, ` Has rolled ${numberOfRolls} times and reached the score ${getPlayerScore(socket.id)}`))
+        } else {
+            //emit die value to all players
+            io.to(player.game).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
+            //save die value to player score
+            updateScore(socket.id, dieValue)
+            updateRolls(socket.id)
+        }
+
         io.to(player.game).emit('gamePlayers', {
             game: player.game,
             players: getGamePlayers(player.game)
         })
+        console.log('Player rolled the dice: ', player)
     })
 })
 
