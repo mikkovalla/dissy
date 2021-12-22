@@ -7,11 +7,12 @@ function playerJoinGame(id, username, game) {
         id,
         username,
         game,
-        score: []
+        score: [],
+        wins: 0
     }
 
     players.push(player)
-    return players
+    return player
 }
 
 // fetch current user

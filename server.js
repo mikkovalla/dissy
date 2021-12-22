@@ -32,15 +32,15 @@ io.on('connection', socket => {
     }) => {
         //create player object and join it to a game. Using socket ID for player ID to differentiate players since no DB is used.
         player = playerJoinGame(socket.id, username, game)
-        console.log(player)
+        console.log('Player joins', player)
         socket.join(player.game)
 
         // Emit welcome message - Emits only to the connected player
         socket.emit('message', resultFormatter(gameBot, `Welcome to Dice Game!`))
 
         // Broadcast to other players in the specifix game that new player has joined
-        socket.broadcast.to(player.game).emit('message', resultFormatter(gameBot, `${player.username} has joined the game`))
-
+        socket.broadcast.to(player.game).emit('message', resultFormatter(gameBot, `${username} has joined the game`))
+        
         // Emit players and game info
         io.to(player.game).emit('gamePlayers', {
             game: player.game,
@@ -62,9 +62,7 @@ io.on('connection', socket => {
 
     // Record rolled die value
     socket.on('dieValue', dieValue => {
-        console.log(dieValue)
         //const player = getPlayer(socket.id)
-        console.log('Die: ', player)
         //emit die value to all players
         // THIS IS BUGGY -> it requires to(player.game).emit to broadcast result only to player room.
         io.to(player.game).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))

@@ -39,7 +39,6 @@ const rollButton = document.getElementById('game-form')
 rollButton.addEventListener('submit', e => {
     e.preventDefault()
     const dieValue = rolledDieNumber()
-    console.log(dieValue)
     // Emit Die value to server
     socket.emit('dieValue', dieValue)
 })
@@ -53,21 +52,18 @@ function rolledDieNumber() {
 // this is a very generic and broad function that renders all outputs
 // prod way would of been differentiating Game bot and player outputs
 function renderMessage(dieValue) {
+    console.log('Player', dieValue)
     const div = document.createElement('div')
     div.classList.add('result')
     // Never do this in prod, leaves a path for a XSS attack. Done here for speed and simplicity
     div.innerHTML =
-        `<p class="meta">${dieValue.username} <span>${dieValue.time}</span></p>
-            <p class="score">
-                ${dieValue.result}
-        </p>`
+        `<p class="meta">${dieValue.username} at <span>${dieValue.time} rolled ${dieValue.result}</span></p>`
     // append results to UI
     document.querySelector('.game-rolls').appendChild(div)
 }
 
 // Game name to UI
 function renderGameName(game) {
-    console.log('Game name: ', game)
     gameName.innerText = game
 }
 
