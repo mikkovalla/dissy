@@ -9,6 +9,9 @@ npm run dev
 localhost:3000
 ```
 
+Logging:
+Server logs joining users and scores.
+
 To play the game with multiple users:
 
 1. Run the server
