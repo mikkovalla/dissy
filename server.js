@@ -13,7 +13,8 @@ const {
     getPlayerScore,
     updateWins,
     updateRolls,
-    getPlayerRolls
+    getPlayerRolls,
+    getGamePlayerScoresAfterNRolls
 } = require('./players')
 
 // Server Creation
@@ -78,6 +79,8 @@ io.on('connection', socket => {
             //save die value to player score
             updateScore(socket.id, dieValue)
             updateRolls(socket.id)
+            // winner constant can be used to calculate the winner
+            const winner = getGamePlayerScoresAfterNRolls(player.game)
             io.to(player.game).emit('message', resultFormatter(player.username, ` Has rolled ${numberOfRolls} times and reached the score ${getPlayerScore(socket.id)}`))
         } else {
             //emit die value to all players

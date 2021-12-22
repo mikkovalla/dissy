@@ -24,8 +24,8 @@ function getPlayer(id) {
 // Remove user from array when they leave a game
 function playerForfeit(id) {
     const player = players.find(player => player.id === id)
-    if (index !== -1) {
-        return users.splice(index, 1)[0];
+    if (i !== -1) {
+        return users.splice(i, 1)[0];
     }
 }
 
@@ -36,10 +36,32 @@ function getGamePlayers(game) {
 
 // Get game player scores after n rolls
 function getGamePlayerScoresAfterNRolls(game) {
-    let gamePlayers = players.filter(player => player.game === game)
-    console.log('Gameplayers: ', gamePlayers)
+    const gamePlayers = players.filter(player => player.game === game)
+    //console.log('Gameplayers: ', gamePlayers)
+    let scores = gamePlayers.map(player => player.score)
+    console.log('Players scores: ', scores)
 
-    return gamePlayers
+    //Return best score or scores if its a tie, returns indexes of best scores
+    const bestScore = Math.max(...scores);
+    const bestPlayers = [];
+    for (let i = 0; i < scores.length; i++) {
+        if (scores[i] === bestScore) {
+            bestPlayers.push(i);
+        }
+    }
+    console.log('Best scores index: ', bestPlayers)
+    
+    if (bestPlayers.length == 1) {
+        const winnerIndex = bestPlayers[0]
+        console.log('winnerindex', winnerIndex)
+        const winner = gamePlayers[winnerIndex]
+        console.log('Gameplayers', gamePlayers)
+        console.log('best player of the game: ', winner)
+        return winner
+    }
+    if (bestPlayers.length !== 1) {
+        return 0
+    }
 }
 
 // push to player score

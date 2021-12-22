@@ -34,6 +34,14 @@ socket.on('gamePlayers', ({
     renderPlayers(players)
 })
 
+socket.on('tie', tie => {
+    alert(tie)
+})
+
+socket.on('winner', winner => {
+    alert(winner)
+})
+
 // Access dice roll button
 const rollButton = document.getElementById('game-form')
 rollButton.addEventListener('submit', e => {
