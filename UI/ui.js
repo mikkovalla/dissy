@@ -71,6 +71,6 @@ function renderGameName(game) {
 function renderPlayers(players) {
     console.log('Players: ', players)
     playersList.innerHTML = `
-        ${players.map(player => `<li>${player.username} ${player.score[0]}</li>`).join('')}
+        ${players.map(player => `<li>${player.username} ${player.score}</li>`).join('')}
     `
 }

@@ -7,7 +7,7 @@ function playerJoinGame(id, username, game) {
         id,
         username,
         game,
-        score: [],
+        score: 0,
         wins: 0
     }
 
@@ -35,7 +35,19 @@ function getGamePlayers(game) {
 // push to player score
 function updateScore(id, score) {
     const player = players.find(player => player.id === id)
-    player.score.push(score)
+    player.score += score
+}
+
+// Get player score
+function getPlayerScore(id) {
+    const player = players.find(player => player.id === id)
+    return player.score
+}
+
+// update player wins
+function updateWins(id, win) {
+    const player = players.find(player => player.id === id)
+    player.win += 1
 }
 
 module.exports = {
@@ -43,5 +55,7 @@ module.exports = {
     getPlayer,
     playerForfeit,
     getGamePlayers,
-    updateScore
+    updateScore,
+    getPlayerScore,
+    updateWins
 }

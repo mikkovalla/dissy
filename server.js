@@ -9,7 +9,9 @@ const {
     getPlayer,
     playerForfeit,
     getGamePlayers,
-    updateScore
+    updateScore,
+    getPlayerScore,
+    updateWins
 } = require('./players')
 
 // Server Creation
@@ -40,7 +42,7 @@ io.on('connection', socket => {
 
         // Broadcast to other players in the specifix game that new player has joined
         socket.broadcast.to(player.game).emit('message', resultFormatter(gameBot, `${username} has joined the game`))
-        
+
         // Emit players and game info
         io.to(player.game).emit('gamePlayers', {
             game: player.game,
@@ -64,10 +66,13 @@ io.on('connection', socket => {
     socket.on('dieValue', dieValue => {
         //const player = getPlayer(socket.id)
         //emit die value to all players
-        // THIS IS BUGGY -> it requires to(player.game).emit to broadcast result only to player room.
         io.to(player.game).emit('message', resultFormatter(player.username, ` rolled ${dieValue}`))
         //save die value to player score
         updateScore(socket.id, dieValue)
+        io.to(player.game).emit('gamePlayers', {
+            game: player.game,
+            players: getGamePlayers(player.game)
+        })
     })
 })
 
